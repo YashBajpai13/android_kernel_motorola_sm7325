@@ -258,7 +258,7 @@ static int ssusb_redriver_read_orientation(struct ps5169_redriver *ps5169)
 	return 0;
 }
 
-int redriver_orientation_get(struct device_node *node)
+/*int redriver_orientation_get(struct device_node *node)
 {
 	struct ps5169_redriver *ps5169;
 	struct i2c_client *client;
@@ -279,9 +279,9 @@ int redriver_orientation_get(struct device_node *node)
 
 	return gpio_get_value(ps5169->orientation_gpio);
 }
-EXPORT_SYMBOL(redriver_orientation_get);
+EXPORT_SYMBOL(redriver_orientation_get);*/
 
-static int ssusb_redriver_ucsi_notifier(struct notifier_block *nb,
+/*static int ssusb_redriver_ucsi_notifier(struct notifier_block *nb,
 										unsigned long action, void *data)
 {
 	struct ps5169_redriver *ps5169 =
@@ -303,7 +303,7 @@ static int ssusb_redriver_ucsi_notifier(struct notifier_block *nb,
 		 * after dp start link training.
 		 * it should only set alternate_mode flag ???
 		 */
-		if (ps5169->op_mode == OP_MODE_DP)
+/*		if (ps5169->op_mode == OP_MODE_DP)
 			return NOTIFY_OK;
 		op_mode = OP_MODE_USB3_AND_DP;
 	} else if (info->partner_usb) {
@@ -339,9 +339,9 @@ static int ssusb_redriver_ucsi_notifier(struct notifier_block *nb,
 	ps5169_config_seqs_init(ps5169);
 	ps5169_config_work_mode(ps5169,ps5169->op_mode);
 	return NOTIFY_OK;
-}
+}*/
 
-int redriver_notify_connect(struct device_node *node)
+/*int redriver_notify_connect(struct device_node *node)
 {
 	struct ps5169_redriver *ps5169;
 	struct i2c_client *client;
@@ -355,7 +355,7 @@ int redriver_notify_connect(struct device_node *node)
 
 	ps5169 = i2c_get_clientdata(client);
 	if (!ps5169)
-		return -EINVAL;
+		return -EINVAL;*/
 
 	/* 1. no operation in recovery mode.
 	 * 2. needed when usb related mode set.
@@ -366,17 +366,17 @@ int redriver_notify_connect(struct device_node *node)
 	 * !!! if future remove ucsi, ucsi_i2c_write_err can be removed,
 	 * and this function also need update !!!.
 	 */
-	if ((ps5169->op_mode == OP_MODE_DEFAULT) ||
+/*	if ((ps5169->op_mode == OP_MODE_DEFAULT) ||
 			((ps5169->op_mode != OP_MODE_USB3) &&
 			 (ps5169->op_mode != OP_MODE_USB3_AND_DP)) ||
 			(!ps5169->ucsi_i2c_write_err))
 		return 0;
 
 	dev_info(ps5169->dev, "op mode %s\n",
-			 OPMODESTR(ps5169->op_mode));
+			 OPMODESTR(ps5169->op_mode));*/
 
 	/* !!! assume i2c resume complete here !!! */
-	ssusb_redriver_enable_chip(ps5169, true);
+/*	ssusb_redriver_enable_chip(ps5169, true);
 	ps5169_config_seqs_init(ps5169);
 	ssusb_redriver_read_orientation(ps5169);
 	ps5169_config_work_mode(ps5169,ps5169->op_mode);
@@ -385,9 +385,9 @@ int redriver_notify_connect(struct device_node *node)
 
 	return 0;
 }
-EXPORT_SYMBOL(redriver_notify_connect);
+EXPORT_SYMBOL(redriver_notify_connect);*/
 
-int redriver_notify_disconnect(struct device_node *node)
+/*int redriver_notify_disconnect(struct device_node *node)
 {
 	struct ps5169_redriver *ps5169;
 	struct i2c_client *client;
@@ -401,7 +401,7 @@ int redriver_notify_disconnect(struct device_node *node)
 
 	ps5169 = i2c_get_clientdata(client);
 	if (!ps5169)
-		return -EINVAL;
+		return -EINVAL;*/
 
 	/* 1. no operation in recovery mode.
 	 * 2. there is case for 4 lane display, first report usb mode,
@@ -410,7 +410,7 @@ int redriver_notify_disconnect(struct device_node *node)
 	 * it should not disable chip.
 	 * 3. if already disabled, no need to disable again.
 	 */
-	if ((ps5169->op_mode == OP_MODE_DEFAULT) ||
+	/*if ((ps5169->op_mode == OP_MODE_DEFAULT) ||
 			(ps5169->op_mode == OP_MODE_DP) ||
 			(ps5169->op_mode == OP_MODE_NONE))
 		return 0;
@@ -423,9 +423,9 @@ int redriver_notify_disconnect(struct device_node *node)
 
 	return 0;
 }
-EXPORT_SYMBOL(redriver_notify_disconnect);
+EXPORT_SYMBOL(redriver_notify_disconnect);*/
 
-int redriver_release_usb_lanes(struct device_node *node)
+/*int redriver_release_usb_lanes(struct device_node *node)
 {
 	struct ps5169_redriver *ps5169;
 	struct i2c_client *client;
@@ -453,10 +453,10 @@ int redriver_release_usb_lanes(struct device_node *node)
 	ps5169_config_work_mode(ps5169, OP_MODE_DP);
 	return 0;
 }
-EXPORT_SYMBOL(redriver_release_usb_lanes);
+EXPORT_SYMBOL(redriver_release_usb_lanes);*/
 
 /* NOTE: DO NOT change mode in this funciton */
-int redriver_gadget_pullup(struct device_node *node, int is_on)
+/*int redriver_gadget_pullup(struct device_node *node, int is_on)
 {
 	struct ps5169_redriver *ps5169;
 	struct i2c_client *client;
@@ -470,7 +470,7 @@ int redriver_gadget_pullup(struct device_node *node, int is_on)
 
 	ps5169 = i2c_get_clientdata(client);
 	if (!ps5169)
-		return -EINVAL;
+		return -EINVAL;*/
 
 	/*
 	 * when redriver connect to a USB hub, and do adb root operation,
@@ -478,7 +478,7 @@ int redriver_gadget_pullup(struct device_node *node, int is_on)
 	 * hub will not detct device logical removal.
 	 * workaround to temp disable/enable redriver when usb pullup operation.
 	 */
-	if (ps5169->op_mode != OP_MODE_USB3)
+/*	if (ps5169->op_mode != OP_MODE_USB3)
 		return 0;
 
 	if (is_on) {
@@ -491,7 +491,7 @@ int redriver_gadget_pullup(struct device_node *node, int is_on)
 
 	return 0;
 }
-EXPORT_SYMBOL(redriver_gadget_pullup);
+EXPORT_SYMBOL(redriver_gadget_pullup);*/
 
 static void ssusb_redriver_orientation_gpio_init(
 	struct ps5169_redriver *ps5169)
